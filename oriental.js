@@ -1,4 +1,6 @@
 
+function Orientation (){
+
 //ウィンドウサイズ取得
 var windowSize = {
     w: innerWidth,
@@ -17,6 +19,20 @@ cautionElem.innerText = 'デバイスを横向きにしてください';
 //フラグ
 var orientationFlg = false;
 
+function toggleFunc (){
+    
+  angle = window.orientation;
+  orientationFlg = false;
+
+  if( angle === 0 && !orientationFlg){
+      cautionElem.style.display = 'none';
+      orientationFlg = true;
+    } else if(!orientationFlg){
+      cautionElem.style.display = 'block';
+      orientationFlg = true;
+    }
+}
+
 function getDeviceDirection (){
     
     if( angle === 0 && !orientationFlg){
@@ -29,19 +45,7 @@ function getDeviceDirection (){
     
     document.body.insertBefore(cautionElem, document.body.firstChild);
     
-    window.addEventListener('orientationchange', () => {
-    
-        angle = window.orientation;
-        orientationFlg = false;
-    
-        if( angle === 0 && !orientationFlg){
-            cautionElem.style.display = 'none';
-            orientationFlg = true;
-          } else if(!orientationFlg){
-            cautionElem.style.display = 'block';
-            orientationFlg = true;
-          }
-    });
+    window.addEventListener('orientationchange', toggleFunc());
 };
 
 //初回判定
@@ -58,5 +62,11 @@ window.addEventListener('resize', function (){
 
     if(windowSize.h <= 450){
         getDeviceDirection();
+    }else {
+      window.removeEventListener('orientationchange', toggleFunc())
+      cautionElem.style.display = 'none';
+      orientationFlg = true;
     }
 })
+
+}
